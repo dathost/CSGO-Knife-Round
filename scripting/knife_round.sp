@@ -30,6 +30,7 @@ ConVar cvBuyTimeNormal;
 ConVar cvBuyTimeImmunity;
 ConVar cvTalkDead;
 ConVar cvTalkLiving;
+ConVar cvSwappedTeams;
 
 int g_iCvarInfo;
 float g_fCvarRoundTime;
@@ -54,6 +55,7 @@ public void OnPluginStart()
 	cvVote = CreateConVar("knifer_votetime", "10.0", "How much time should vote take? (5 to 20 seconds)", _, true, 5.0, true, 20.0);
 	cvAllowAllTalk = CreateConVar("knifer_alltalk", "1", "Should there be alltalk enabled while knife round? (1 - enabled, 0 - disabled)", _, true, 0.0, true, 1.0);
 	cvUnload = CreateConVar("knifer_unload", "kento_rankme", "Unload these plugins while knife round is being played (separate plugins with commas)", _, false, _, false, _);
+	cvSwappedTeams = CreateConVar("knifer_swapped_teams", "0", "Is set to 1 if teams are swapped");
 	
 	cvBuyTimeNormal = FindConVar("mp_buytime");
 	cvBuyTimeImmunity = FindConVar("mp_buy_during_immunity");
@@ -290,10 +292,12 @@ stock void RestartLastTime(bool swap = false)
 	ServerCommand("mp_startmoney 800");
 	ServerCommand("mp_unpause_match");
 	
-	if (swap)
+	if (swap) {
+		cvSwappedTeams.IntValue = 1;
 		ServerCommand("mp_swapteams");
-	else
+	} else {
 		ServerCommand("mp_restartgame 1");
+	}
 }
 
 stock void StripPlayerWeapons(int client)

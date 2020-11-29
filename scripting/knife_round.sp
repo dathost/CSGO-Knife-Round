@@ -210,6 +210,20 @@ public Action StripAllPlayersWeapons(Handle timer)
 {
 	for (int i = 1; i <= MaxClients; i++)
 		StripPlayerWeapons(i);
+
+	// kill off any dropped weapons as well
+	// https://forums.alliedmods.net/showthread.php?t=261077&page=2
+	int maxent = GetMaxEntities();
+	char weapon[256];
+	for (int i = MaxClients; i < maxent; i++)
+	{
+		if( IsValidEdict(i) && IsValidEntity(i) )
+		{
+			GetEdictClassname(i, weapon, sizeof(weapon));
+			if(!(StrContains(weapon, "weapon_")) && (StrContains(weapon, "weapon_knife") != 0) &&  (StrContains(weapon, "weapon_bayonet") != 0))
+					AcceptEntityInput(i, "Kill");
+		}
+	}
 }
 
 public Action DisplayDelayedHUD(Handle hTimer, Handle hData)

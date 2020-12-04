@@ -46,6 +46,7 @@ Simple SourceMod plugin that allows you to play an additional round before a mat
 
 
 # Cvars
+Add config overrides to cfg/sourcemod/knife_round.cfg
 ```
 knifer_info 0-2 - Sets the messages display type (0 - no messages, 1 - chat, 2 - HUD)
 knifer_roundtime 0.5-60.0 - Sets how long the knife round will last

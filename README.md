@@ -53,4 +53,5 @@ knifer_roundtime 0.5-60.0 - Sets how long the knife round will last
 knifer_votetime 5.0-20.0 - Sets how long the vote for team change will last
 knifer_alltalk 0-1 - Sets if there will be alltalk enabled on knife round
 knifer_unload "kento_rankme,rankme" - Unload these plugins while knife round is being played (separate plugins with commas)
+knifer_free_armor - Make all players spawn with armor + helmet in knife round
 ```

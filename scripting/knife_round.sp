@@ -25,6 +25,7 @@ ConVar cvInfo;
 ConVar cvTime;
 ConVar cvVote;
 ConVar cvAllowAllTalk;
+ConVar cvFreeArmor;
 ConVar cvUnload;
 ConVar cvBuyTimeNormal;
 ConVar cvBuyTimeImmunity;
@@ -36,6 +37,7 @@ int g_iCvarInfo;
 float g_fCvarRoundTime;
 float g_fCvarVoteTime;
 int g_iCvarAllowAllTalk;
+int g_iCvarFreeArmor;
 char g_cCvarUnloadPlugins[256];
 float g_fCvarBuyTimeNormal;
 float g_fCvarBuyTimeImmunity;
@@ -54,6 +56,7 @@ public void OnPluginStart()
 	cvTime = CreateConVar("knifer_roundtime", "60.0", "How much time should knife round take? (0.5 to 60.0 minutes)", _, true, 0.5, true, 60.0);
 	cvVote = CreateConVar("knifer_votetime", "10.0", "How much time should vote take? (5 to 20 seconds)", _, true, 5.0, true, 20.0);
 	cvAllowAllTalk = CreateConVar("knifer_alltalk", "1", "Should there be alltalk enabled while knife round? (1 - enabled, 0 - disabled)", _, true, 0.0, true, 1.0);
+	cvFreeArmor = CreateConVar("knifer_free_armor", "0", "Make all players spawn with armor + helmet in knife round (1 - enabled, 0 - disabled)", _, true, 0.0, true, 1.0);
 	cvUnload = CreateConVar("knifer_unload", "kento_rankme", "Unload these plugins while knife round is being played (separate plugins with commas)", _, false, _, false, _);
 	cvSwappedTeams = CreateConVar("knifer_swapped_teams", "0", "Is set to 1 if teams are swapped");
 	
@@ -76,6 +79,7 @@ public void OnConfigsExecuted()
 	g_fCvarRoundTime = GetConVarFloat(cvTime);
 	g_fCvarVoteTime = GetConVarFloat(cvVote);
 	g_iCvarAllowAllTalk = GetConVarInt(cvAllowAllTalk);
+	g_iCvarFreeArmor = GetConVarInt(cvFreeArmor);
 	GetConVarString(cvUnload, g_cCvarUnloadPlugins, sizeof(g_cCvarUnloadPlugins));
 	
 	
@@ -285,6 +289,9 @@ stock void PrepareCvarsForKnifeRound()
 	ServerCommand("mp_buy_during_immunity 0");
 	ServerCommand("mp_startmoney 0");
 	ServerCommand("mp_restartgame 1");
+	if (g_iCvarFreeArmor) {
+		ServerCommand("mp_free_armor 1");
+	}
 }
 
 stock void RestoreCvarsAfterKnifeRound()
@@ -297,6 +304,9 @@ stock void RestoreCvarsAfterKnifeRound()
 	ServerCommand("mp_roundtime 1.92");
 	ServerCommand("mp_roundtime_defuse 1.92");
 	ServerCommand("mp_pause_match");
+	if (g_iCvarFreeArmor) {
+		ServerCommand("mp_free_armor 0");
+	}
 }
 
 stock void RestartLastTime(bool swap = false)
